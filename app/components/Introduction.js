@@ -7,7 +7,7 @@ function Introduction() {
         <div className="flex justify-center items-center">
         <img
           className="w-full dark:hidden max-w-screen-sm"
-          src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/cta/cta-dashboard-mockup.svg"
+          src='/images/panel.png'
           alt="dashboard image"
         />
         </div>
