@@ -5,7 +5,7 @@ import { Input } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { DatePicker } from "@nextui-org/react";
 import { Slider } from "@nextui-org/react";
-
+import NumberChanger from "./NumberChanger";
 function Survey() {
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -45,15 +45,8 @@ function Survey() {
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 원하시는 금액대를 알려주세요</div>
             <div className="flex w-full ">
-              <Slider
-                label="Price Range"
-                step={50}
-                minValue={0}
-                maxValue={1000}
-                defaultValue={[100, 500]}
-                formatOptions={{ style: "currency", currency: "USD" }}
-                className="max-w-md"
-              />
+              <NumberChanger></NumberChanger>
+
             </div>
           </div>
 
