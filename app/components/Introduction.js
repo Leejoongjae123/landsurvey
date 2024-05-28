@@ -12,7 +12,7 @@ function Introduction() {
         />
         </div>
         <div className="flex justify-center items-center">
-        <div className="mt-4 md:mt-0 w-full justify-center items-center flex-col max-w-screen-md">
+        {/* <div className="mt-4 md:mt-0 w-full justify-center items-center flex-col max-w-screen-md">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-9000 dark:text-white text-center">
             Let's create more tools and ideas that brings us together.
           </h2>
@@ -22,7 +22,7 @@ function Introduction() {
             well as discovering new ones is easy with features like Groups.
           </p>
           
-        </div>
+        </div> */}
         </div>
         
       </div>
