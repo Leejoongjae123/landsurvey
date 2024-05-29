@@ -9,22 +9,24 @@ import Language from "../app/components/Lauguage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
-
+import {Suspense} from 'react'
+import LoginNotifier from "@/app/components/LoginNotifier";
 export default function Home() {
-  const searchParams=useSearchParams().get('login')
+  // const searchParams=useSearchParams().get('login')
 
-  const notify = (message) => toast(message);
+  // const notify = (message) => toast(message);
 
-  useEffect(()=>{
-    if(searchParams==='success'){
-      notify("Signin Success")
-    }
+  // useEffect(()=>{
+  //   if(searchParams==='success'){
+  //     notify("Signin Success")
+  //   }
     
-  },[])
+  // },[])
   
 
   return (
     <>
+
       <ToastContainer
         position="top-right" // 알람 위치 지정
         autoClose={1000} // 자동 off 시간
@@ -37,6 +39,9 @@ export default function Home() {
         theme="light"
         // limit={1} // 알람 개수 제한
       />
+      <Suspense fallback={<div>Loading...</div>}>
+        <LoginNotifier />
+      </Suspense>
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:pt-16 lg:px-12">
           <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">

@@ -4,7 +4,7 @@ import { createClient } from "@/utils/supabase/client"; // 상대 경로는 프�
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import { Suspense } from "react";
 export default function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,25 +22,27 @@ export default function page() {
     if (!error) {
       return router.push("/signin?signup=success");
     } else {
-      console.log(error.message)
+      console.log(error.message);
       notify(error.message);
     }
   };
 
   return (
     <>
-      <ToastContainer
-        position="top-right" // 알람 위치 지정
-        autoClose={1000} // 자동 off 시간
-        hideProgressBar={false} // 진행시간바 숨김
-        closeOnClick // 클릭으로 알람 닫기
-        rtl={false} // 알림 좌우 반전
-        pauseOnFocusLoss // 화면을 벗어나면 알람 정지
-        draggable // 드래그 가능
-        pauseOnHover // 마우스를 올리면 알람 정지
-        theme="light"
-        // limit={1} // 알람 개수 제한
-      />
+      <Suspense>
+        <ToastContainer
+          position="top-right" // 알람 위치 지정
+          autoClose={1000} // 자동 off 시간
+          hideProgressBar={false} // 진행시간바 숨김
+          closeOnClick // 클릭으로 알람 닫기
+          rtl={false} // 알림 좌우 반전
+          pauseOnFocusLoss // 화면을 벗어나면 알람 정지
+          draggable // 드래그 가능
+          pauseOnHover // 마우스를 올리면 알람 정지
+          theme="light"
+          // limit={1} // 알람 개수 제한
+        />
+      </Suspense>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">

@@ -4,23 +4,25 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client"; // 상대 경로는 프로젝트 구조에 따라 다를 수 있음
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { user } from "@nextui-org/react";
+import { Suspense } from "react";
+import SearchParamsNotifier from "./components/SearchParamsNotifier";
+
 
 export default function page() {
-  const [email,setEmail]=useState('')
-  const [password,setPassword]=useState('')
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const searchParams=useSearchParams().get('signup')
-  const notify = (message) => toast(message);
+  // const searchParams = useSearchParams().get("signup");
+  // const notify = (message) => toast(message);
   const supabase = createClient();
-  const router=useRouter()
-  useEffect(()=>{
-    if(searchParams==='success'){
-      notify("Signup Success")
-    }
-    
-  },[])
+  const router = useRouter();
+  // useEffect(() => {
+  //   if (searchParams === "success") {
+  //     notify("Signup Success");
+  //   }
+  // }, []);
 
   const handleLogin = async (event) => {
     event.preventDefault(); // 폼 제출 기본 동작 방지
@@ -36,9 +38,12 @@ export default function page() {
     }
   };
 
-
   return (
     <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsNotifier />
+      </Suspense>
+
       <ToastContainer
         position="top-right" // 알람 위치 지정
         autoClose={1000} // 자동 off 시간
@@ -51,6 +56,7 @@ export default function page() {
         theme="light"
         // limit={1} // 알람 개수 제한
       />
+
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -59,7 +65,7 @@ export default function page() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="space-y-6" >
+          <div className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -75,7 +81,7 @@ export default function page() {
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  onChange={(e)=>setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   value={email}
                 />
               </div>
@@ -106,7 +112,7 @@ export default function page() {
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  onChange={(e)=>setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 />
               </div>
@@ -122,7 +128,6 @@ export default function page() {
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </>
