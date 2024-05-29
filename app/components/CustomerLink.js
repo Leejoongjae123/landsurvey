@@ -10,7 +10,7 @@ function CustomerLink() {
   const segment = useSelectedLayoutSegment();
   console.log(segment)
   return (
-    <Link href="/" aria-current="page" color="blue">
+    <Link href="/" color="blue">
     <p className={segment === null ? 'text-blue-500' : ''}>Customer</p>
     </Link>
   )

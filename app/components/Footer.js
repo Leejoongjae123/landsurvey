@@ -14,7 +14,7 @@ function Footer() {
         <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 dark:text-gray-400 sm:mt-0">
           <li>
             <a href="#" className="hover:underline me-4 md:me-6">
-              About
+              Contact
             </a>
           </li>
           <li>
@@ -23,8 +23,8 @@ function Footer() {
             </a>
           </li>
           <li>
-            <a href="#" className="hover:underline">
-              Contact
+            <a href="/agency" className="hover:underline">
+              Go To Agency
             </a>
           </li>
         </ul>

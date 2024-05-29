@@ -7,7 +7,7 @@ function AgencyLink() {
   const segment = useSelectedLayoutSegment();
 
   return (
-    <Link href="/agency" aria-current="page" color="foreground">
+    <Link href="/agency" color="foreground">
     <p className={segment === 'agency' ? 'text-blue-500' : ''}>Agency</p>
     </Link>
   )
