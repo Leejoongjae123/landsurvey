@@ -9,6 +9,8 @@ import {
 import Link from 'next/link'
 import { redirect } from "next/navigation";
 import LoginButtons from "./LoginButtons";
+import CustomerLink from "./CustomerLink";
+import AgencyLink from "./AgencyLink";
 
 export default function App() {
 
@@ -22,14 +24,10 @@ export default function App() {
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link href="/" aria-current="page" color="foreground">
-            Customers
-          </Link>
+          <CustomerLink></CustomerLink>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/agency" color="foreground">
-            Agency
-          </Link>
+          <AgencyLink></AgencyLink>
         </NavbarItem>
       </NavbarContent>
       <LoginButtons></LoginButtons>
