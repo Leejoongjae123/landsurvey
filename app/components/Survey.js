@@ -68,7 +68,15 @@ function Survey() {
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 당신의 나이는</div>
-            <NumberChanger number={age} setNumber={setAge}></NumberChanger>
+            <div className="flex gap-4 flex-col items-baseline">
+              <RadioGroup defaultValue="남">
+                <Radio value="20">20~25</Radio>
+                <Radio value="25">25~30</Radio>
+                <Radio value="30">30~35</Radio>
+                <Radio value="35">35~45</Radio>
+                <Radio value="45">45~</Radio>
+              </RadioGroup>
+            </div>
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 당신이 지불할 보증금은</div>
