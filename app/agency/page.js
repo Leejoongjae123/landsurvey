@@ -127,8 +127,11 @@ function page() {
             avatarUrl: `https://saeehnkthdubrcjpoest.supabase.co/storage/v1/object/public/${data.fullPath}`,
           })
           .eq("id", userId);
+        
+        
+        notify("upload success");
 
-        console.log(data2);
+          
       }
     }
   };
