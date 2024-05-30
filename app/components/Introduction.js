@@ -8,7 +8,7 @@ function Introduction({businescardUrl, isLoading}) {
         <div className="flex justify-center items-center">
         { isLoading ? (
                   <Image
-                  width="auto"
+                  width={300}
                   alt="NextUI hero Image"
                   src={businescardUrl}
                   />
