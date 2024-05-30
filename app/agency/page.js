@@ -3,12 +3,26 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client"; // 상대 경로는 프로젝트 구조에 따라 다를 수 있음
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import { Input } from "@nextui-org/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Image } from "@nextui-org/react";
+import axios from "axios";
 function page() {
-  const router=useRouter()
+  const router = useRouter();
   const supabase = createClient();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState("");
-
+  const [userId, setUserId] = useState("");
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [regionAddress, setRegionAddress] = useState("");
+  const [regionStation, setRegionStation] = useState("");
+  const [regionDong, setRegionDong] = useState("");
+  const [regionUniv, setRegionUniv] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser("");
@@ -16,15 +30,16 @@ function page() {
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
+      async (event, session) => {
         if (session) {
           setIsLoggedIn(true);
+          setUserId(session?.user?.id);
+          // Fetch profile data based on userId
         } else {
           setIsLoggedIn(false);
         }
       }
     );
-
     // Clean up the subscription on unmount
     return () => {
       authListener.subscription.unsubscribe();
@@ -35,65 +50,322 @@ function page() {
     router.push("/signin");
   };
 
-  console.log("isLoggedIn:", isLoggedIn);
+  const notify = (message) => toast(message);
+  const getInfos = async () => {
+    let { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+    console.log("data:", data);
+    if (error) {
+      console.error("Error fetching profile:", error);
+    } else {
+      console.log("Profile data:", data);
+      setName(data.username);
+      setCompany(data.company);
+      setRegionAddress(data.regionAddress);
+      setRegionStation(data.regionStation);
+      setRegionDong(data.regionDong);
+      setRegionUniv(data.regionUniv);
+      setImageUrl(data.avatarUrl);
+    }
+  };
+  useEffect(() => {
+    if (userId !== "") {
+      getInfos();
+    }
+  }, [userId]);
+  const handleSubmit = async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .update({
+        username: name,
+        company: company,
+        regionAddress: regionAddress,
+        regionStation: regionStation,
+        regionDong: regionDong,
+        regionUniv: regionUniv,
+      })
+      .eq("id", userId);
+    console.log(data);
+    if (!error) {
+      notify("update success");
+    } else {
+      notify("update failed");
+    }
+  };
+
+  const handleFileChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+
+  const handleSubmitImage = async () => {
+    if (file && name) {
+      let { data, error } = await supabase.storage
+        .from("businesscard")
+        .upload(`${userId}_${getCurrentTimeString()}.jpg`, file, {
+          upsert: true,
+        });
+
+      if (error) {
+        console.error("Error uploading file:", error);
+      } else {
+        console.log("File uploaded successfully:", data);
+        let { data: data2, error } = await supabase
+          .from("profiles")
+          .update({
+            avatarUrl: `https://saeehnkthdubrcjpoest.supabase.co/storage/v1/object/public/${data.fullPath}`,
+          })
+          .eq("id", userId);
+
+        console.log(data2);
+      }
+    }
+  };
+
+  const handleDownload = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        'https://n3dt72xap2xe63vrms7sxbur6a0macjt.lambda-url.ap-northeast-2.on.aws/generate_qr',
+        {
+          params: { url: 'https://www.naver.com' },
+          headers: { 'accept': 'application/json' },
+          responseType: 'blob', // 중요한 부분: 응답을 blob으로 설정
+        }
+      );
+      console.log(response)
+      // 파일 다운로드 처리
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'qr_code.png');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error('Error downloading the QR code:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
       {isLoggedIn ? (
-        <div id="updateProductModal"  className="flex justify-center items-center">
-        <div className="p-4 w-full max-w-2xl h-full md:h-auto">
-            
+        <div
+          id="updateProductModal"
+          className="flex justify-center items-center flex-col"
+        >
+          <ToastContainer
+            position="top-right" // 알람 위치 지정
+            autoClose={1000} // 자동 off 시간
+            hideProgressBar={false} // 진행시간바 숨김
+            closeOnClick // 클릭으로 알람 닫기
+            rtl={false} // 알림 좌우 반전
+            pauseOnFocusLoss // 화면을 벗어나면 알람 정지
+            draggable // 드래그 가능
+            pauseOnHover // 마우스를 올리면 알람 정지
+            theme="light"
+            // limit={1} // 알람 개수 제한
+          />
+          <div className="p-4 w-full max-w-2xl h-full md:h-auto">
             <div className="p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-            
-                <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        Update Information
-                    </h3>
+              <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Update Information(기본정보)
+                </h3>
+              </div>
+
+              <div>
+                <div className="grid gap-4 mb-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Name(이름)
+                    </label>
+                    <Input
+                      type="text"
+                      label=""
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="brand"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Company(상호)
+                    </label>
+                    <Input
+                      type="text"
+                      label=""
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="price"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Address(주소)
+                    </label>
+                    <Input
+                      type="text"
+                      label=""
+                      value={regionAddress}
+                      onChange={(e) => setRegionAddress(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="category"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Station(역)
+                    </label>
+                    <Input
+                      type="text"
+                      label=""
+                      value={regionStation}
+                      onChange={(e) => setRegionStation(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="price"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      District(동)
+                    </label>
+                    <Input
+                      type="text"
+                      label=""
+                      value={regionDong}
+                      onChange={(e) => setRegionDong(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="category"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      University(대학)
+                    </label>
+                    <Input
+                      type="text"
+                      label=""
+                      value={regionUniv}
+                      onChange={(e) => setRegionUniv(e.target.value)}
+                    />
+                  </div>
                 </div>
-            
-                <div >
-                    <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                        <div>
-                            <label for="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
-                            <input type="text" name="name" id="name" value="iPad Air Gen 5th Wi-Fi" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Ex. Apple iMac 27&ldquo;"/>
-                        </div>
-                        <div>
-                            <label for="brand" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
-                            <input type="text" name="brand" id="brand" value="Google" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Ex. Apple"/>
-                        </div>
-                        <div>
-                            <label for="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
-                            <input type="number" value="399" name="price" id="price" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="$299"/>
-                        </div>
-                        <div>
-                            <label for="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
-                            <select id="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option selected="">Electronics</option>
-                                <option value="TV">TV/Monitors</option>
-                                <option value="PC">PC</option>
-                                <option value="GA">Gaming/Console</option>
-                                <option value="PH">Phones</option>
-                            </select>
-                        </div>
-                        <div className="sm:col-span-2">
-                            <label for="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <textarea id="description" rows="5" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write a description...">Standard glass, 3.8GHz 8-core 10th-generation Intel Core i7 processor, Turbo Boost up to 5.0GHz, 16GB 2666MHz DDR4 memory, Radeon Pro 5500 XT with 8GB of GDDR6 memory, 256GB SSD storage, Gigabit Ethernet, Magic Mouse 2, Magic Keyboard - US</textarea>                    
-                        </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <Button color='primary' type="submit" className="">
-                            Update
-                        </Button>
-                    </div>
+                <div className="flex items-center space-x-4 justify-center">
+                  <Button
+                    onClick={handleSubmit}
+                    color="primary"
+                    type="submit"
+                    className=""
+                  >
+                    Update
+                  </Button>
                 </div>
+              </div>
             </div>
+          </div>
+          <div className="p-4 w-full max-w-2xl h-full md:h-auto">
+            <div className="p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+              <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  Update BusinessCard(명함)
+                </h3>
+              </div>
+
+              <div>
+                <div className="flex mb-4 justify-center">
+                  <Image width={300} alt="NextUI hero Image" src={imageUrl} />
+                </div>
+                <div className="flex justify-center items-center space-x-6">
+                  <div className="shrink-0"></div>
+                  <label className="block">
+                    <input
+                      type="file"
+                      className="block w-full text-sm text-slate-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-[0.5rem] file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-gray-800 file:text-white
+                      hover:file:bg-gray-300
+                      mb-[1rem]
+                      "
+                      onChange={handleFileChange}
+                    />
+                  </label>
+                </div>
+
+                <div className="flex items-center space-x-4 justify-center">
+                  <Button
+                    onClick={handleSubmitImage}
+                    color="primary"
+                    type="submit"
+                    className=""
+                  >
+                    Update
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 w-full max-w-2xl h-full md:h-auto">
+            <div className="p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
+              <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  QR Code
+                </h3>
+              </div>
+
+              <div>
+                <div className="flex mb-4 justify-center">
+                  <Image width={300} alt="NextUI hero Image" src={imageUrl} />
+                </div>
+                <div className="flex justify-center items-center space-x-6">
+                  <div className="shrink-0"></div>
+                  <label className="block"></label>
+                </div>
+
+                <div className="flex items-center space-x-4 justify-center">
+                  <Button
+                    onClick={handleDownload}
+                    color="primary"
+                    type="submit"
+                    className=""
+                  >
+                    QR Download
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
       ) : (
         <div
           id="info-popup"
-          tabindex="-1"
-          className="flex justify-center items-center h-[30vh]" 
+          tabIndex="-1"
+          className="flex justify-center items-center h-[30vh]"
         >
           <div className="relative p-4 w-full max-w-lg h-full md:h-auto">
             <div className="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 md:p-8">
@@ -101,13 +373,10 @@ function page() {
                 <h3 className="mb-3 text-2xl font-bold text-gray-900 dark:text-white">
                   Please Signin
                 </h3>
-                <p>
-                Please Signin to continue.
-                </p>
+                <p>Please Signin to continue.</p>
               </div>
               <div className="justify-between items-center pt-0 space-y-4 sm:flex sm:space-y-0">
                 <div className="items-center space-y-4 sm:space-x-4 sm:flex sm:space-y-0">
-                  
                   <Button
                     color="primary"
                     id="confirm-button"
@@ -128,3 +397,20 @@ function page() {
 }
 
 export default page;
+
+function getCurrentTimeString() {
+  const now = new Date();
+
+  // 시, 분, 초를 얻음
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let seconds = now.getSeconds();
+
+  // 두 자리 수로 포맷팅
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  seconds = seconds < 10 ? "0" + seconds : seconds;
+
+  // 시간 문자열로 반환
+  return `${hours}:${minutes}:${seconds}`;
+}
