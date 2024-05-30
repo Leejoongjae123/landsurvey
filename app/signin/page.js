@@ -13,7 +13,7 @@ import SearchParamsNotifier from "./components/SearchParamsNotifier";
 export default function page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
   // const searchParams = useSearchParams().get("signup");
   // const notify = (message) => toast(message);
   const supabase = createClient();

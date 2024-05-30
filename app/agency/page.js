@@ -139,7 +139,7 @@ function page() {
       const response = await axios.get(
         'https://n3dt72xap2xe63vrms7sxbur6a0macjt.lambda-url.ap-northeast-2.on.aws/generate_qr',
         {
-          params: { url: 'https://www.naver.com' },
+          params: { url: 'https://landsurvey.vercel.app?id='+userId },
           headers: { 'accept': 'application/json' },
           responseType: 'blob', // 중요한 부분: 응답을 blob으로 설정
         }
@@ -339,9 +339,7 @@ function page() {
               </div>
 
               <div>
-                <div className="flex mb-4 justify-center">
-                  <Image width={300} alt="NextUI hero Image" src={imageUrl} />
-                </div>
+                
                 <div className="flex justify-center items-center space-x-6">
                   <div className="shrink-0"></div>
                   <label className="block"></label>
@@ -412,5 +410,5 @@ function getCurrentTimeString() {
   seconds = seconds < 10 ? "0" + seconds : seconds;
 
   // 시간 문자열로 반환
-  return `${hours}:${minutes}:${seconds}`;
+  return `${hours}_${minutes}_${seconds}`;
 }

@@ -11,18 +11,22 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSearchParams } from "next/navigation";
 import {Suspense} from 'react'
 import LoginNotifier from "@/app/components/LoginNotifier";
+import {createClient} from '@/utils/supabase/client'
 export default function Home() {
-  // const searchParams=useSearchParams().get('login')
+  const [businescardUrl, setBusinescardUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const supabase=createClient()
 
-  // const notify = (message) => toast(message);
+  const getBusinessCardUrl=async(businescardUrl)=>{
+    const {data,error}=await supabase.from('profiles').select('*').eq('id',businescardUrl).single()
+    if(error){
+      console.log(error)
+    }
+    setBusinescardUrl(data.avatarUrl)
+    setIsLoading(true)
+  }
 
-  // useEffect(()=>{
-  //   if(searchParams==='success'){
-  //     notify("Signin Success")
-  //   }
-    
-  // },[])
-  
+  console.log('businescardUrl:',businescardUrl)
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function Home() {
         // limit={1} // 알람 개수 제한
       />
       <Suspense fallback={<div>Loading...</div>}>
-        <LoginNotifier />
+        <LoginNotifier businescardUrl={businescardUrl} setBusinescardUrl={setBusinescardUrl} getBusinessCardUrl={getBusinessCardUrl}/>
       </Suspense>
       <section className="bg-white dark:bg-gray-900">
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:pt-16 lg:px-12">
@@ -52,7 +56,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <Introduction></Introduction>
+      <Introduction isLoading={isLoading} businescardUrl={businescardUrl}></Introduction>
       <Language></Language>
       <Survey></Survey>
     </>

@@ -1,15 +1,39 @@
 import React from "react";
+import {Image,Card, Skeleton} from "@nextui-org/react";
 
-function Introduction() {
+function Introduction({businescardUrl, isLoading}) {
   return (
     <section className="bg-white dark:bg-gray-900 px-16 md:my-12">
       <div className="gap-8 max-w-screen-xl flex-col justify-center items-center mx-auto xl:gap-16 md:grid md:grid-cols-1 lg:px-6">
         <div className="flex justify-center items-center">
-        <img
-          className="w-full dark:hidden max-w-screen-sm"
-          src='/images/panel.png'
-          alt="dashboard image"
-        />
+        { isLoading ? (
+                  <Image
+                  width="auto"
+                  alt="NextUI hero Image"
+                  src={businescardUrl}
+                  />
+              
+        ) :
+        <Card className="w-[200px] space-y-5 p-4" radius="lg">
+              <Skeleton className="rounded-lg">
+                <div className="h-24 rounded-lg bg-default-300"></div>
+              </Skeleton>
+              <div className="space-y-3">
+                <Skeleton className="w-3/5 rounded-lg">
+                  <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+                <Skeleton className="w-4/5 rounded-lg">
+                  <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                </Skeleton>
+                <Skeleton className="w-2/5 rounded-lg">  
+                  <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                </Skeleton>
+              </div>
+            </Card>
+
+        }
+
+        
         </div>
         <div className="flex justify-center items-center">
         {/* <div className="mt-4 md:mt-0 w-full justify-center items-center flex-col max-w-screen-md">

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 
-export default function SearchParamsNotifier() {
+export default function SearchParamsNotifier({businesscardUrl, setBusinesscardUrl}) {
   const searchParams = useSearchParams();
   const notify = (message) => toast(message);
 
@@ -19,6 +19,11 @@ export default function SearchParamsNotifier() {
     } else if (loginStatus === "fail") {
       notify("Signin Failed");
     }
+    const userId = searchParams.get("id");
+    if (userId) {
+      setBusinesscardUrl(userId);
+    }
+
   }, [searchParams]);
 
   return null;
