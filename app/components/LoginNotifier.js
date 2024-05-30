@@ -11,7 +11,10 @@ export default function LoginNotifier({businescardUrl, setBusinescardUrl,getBusi
   useEffect(() => {
     if (searchParams === 'success') {
       notify("Signin Success");
+    }else if (searchParams === 'fail') {
+      notify("Signin fail. try again.");
     }
+
     if (userId){
       
       getBusinessCardUrl(userId)
