@@ -239,7 +239,7 @@ function page() {
                       htmlFor="category"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Station(역)
+                      Station nearby(가까운 역)
                     </label>
                     <Input
                       type="text"
@@ -267,7 +267,7 @@ function page() {
                       htmlFor="category"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      University(대학)
+                      University nearby(가까운 대학)
                     </label>
                     <Input
                       type="text"
