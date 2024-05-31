@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Image } from "@nextui-org/react";
+import { Image,Link } from "@nextui-org/react";
 import axios from "axios";
 function page() {
   const router = useRouter();
@@ -22,7 +22,7 @@ function page() {
   const [imageUrl, setImageUrl] = useState("");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+  const [myUrl, setMyUrl] = useState("");
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser("");
@@ -34,6 +34,7 @@ function page() {
         if (session) {
           setIsLoggedIn(true);
           setUserId(session?.user?.id);
+          setMyUrl('https://landsurvey.vercel.app?id='+session?.user?.id);
           // Fetch profile data based on userId
         } else {
           setIsLoggedIn(false);
@@ -348,7 +349,7 @@ function page() {
                   <label className="block"></label>
                 </div>
 
-                <div className="flex items-center space-x-4 justify-center">
+                <div className="flex items-center space-x-4 justify-center my-5">
                   <Button
                     onClick={handleDownload}
                     color="primary"
@@ -357,10 +358,15 @@ function page() {
                   >
                     QR Download
                   </Button>
+                
                 </div>
+                
               </div>
+              <Link href={myUrl}>{myUrl}</Link>  
             </div>
+            
           </div>
+          
         </div>
       ) : (
         <div
