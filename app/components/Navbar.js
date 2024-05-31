@@ -18,7 +18,7 @@ export default function App() {
     <Navbar isBordered>
       <NavbarBrand>
         <Link href="/">
-        <p className="font-bold text-inherit">GlobalRent</p>
+        <p className="font-bold text-inherit">Lease Request Form</p>
         </Link>
         
       </NavbarBrand>

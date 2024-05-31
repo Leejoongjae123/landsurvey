@@ -19,13 +19,11 @@ function Survey() {
 
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
-        <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
+      <div className="py-8 px-4 mx-auto max-w-screen-md">
+        {/* <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
           Share Your Real Estate Details with Us
-        </h2>
-        <p className="mb-8 lg:mb-16 font-light text-center text-gray-500 dark:text-gray-400 sm:text-xl">
-          Tell Us What You Want in Your Ideal Property
-        </p>
+        </h2> */}
+
         <div className="space-y-8 flex flex-col justify-center items-center">
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 입주 가능일</div>

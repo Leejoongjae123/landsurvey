@@ -5,7 +5,7 @@ import { language } from "./data.js";
 
 export default function App() {
   return (
-    <div className="flex justify-center items-center py-10 md:py-0 ">
+    <div className="flex justify-center items-center md:py-0 ">
       <Select
         items={language}
         label="Language"
