@@ -1,42 +1,39 @@
 import React from "react";
-import {Image,Card, Skeleton} from "@nextui-org/react";
+import { Image, Card, Skeleton } from "@nextui-org/react";
 
-function Introduction({businescardUrl, isLoading}) {
+function Introduction({ businescardUrl, isLoading, introduction }) {
   return (
     <section className="bg-white dark:bg-gray-900 px-16 md:my-12">
       <div className="gap-8 max-w-screen-xl flex-col justify-center items-center mx-auto xl:gap-16 md:grid md:grid-cols-1 lg:px-6">
         <div className="flex justify-center items-center">
-        { isLoading ? (
-                  <Image
-                  width={300}
-                  alt="NextUI hero Image"
-                  src={businescardUrl}
-                  />
-              
-        ) :
-        <Card className="w-[200px] space-y-5 p-4" radius="lg">
-              <Skeleton className="rounded-lg">
-                <div className="h-24 rounded-lg bg-default-300"></div>
-              </Skeleton>
-              <div className="space-y-3">
-                <Skeleton className="w-3/5 rounded-lg">
-                  <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+          {isLoading ? (
+            <Image width={300} alt="NextUI hero Image" src={businescardUrl} />
+          ) : (
+            <>
+            <div className="flex flex-col justify-center items-center">
+              <Card className="w-[200px] space-y-5 p-4" radius="lg">
+                <Skeleton className="rounded-lg">
+                  <div className="h-24 rounded-lg bg-default-300"></div>
                 </Skeleton>
-                <Skeleton className="w-4/5 rounded-lg">
-                  <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
-                </Skeleton>
-                <Skeleton className="w-2/5 rounded-lg">  
-                  <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
-                </Skeleton>
+                <div className="space-y-3">
+                  <Skeleton className="w-3/5 rounded-lg">
+                    <div className="h-3 w-3/5 rounded-lg bg-default-200"></div>
+                  </Skeleton>
+                  <Skeleton className="w-4/5 rounded-lg">
+                    <div className="h-3 w-4/5 rounded-lg bg-default-200"></div>
+                  </Skeleton>
+                  <Skeleton className="w-2/5 rounded-lg">
+                    <div className="h-3 w-2/5 rounded-lg bg-default-300"></div>
+                  </Skeleton>
+                </div>
+              </Card>
+              <div className="font-bold text-2xl my-5">{introduction}</div>
               </div>
-            </Card>
-
-        }
-
-        
+            </>
+          )}
         </div>
         <div className="flex justify-center items-center">
-        {/* <div className="mt-4 md:mt-0 w-full justify-center items-center flex-col max-w-screen-md">
+          {/* <div className="mt-4 md:mt-0 w-full justify-center items-center flex-col max-w-screen-md">
           <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-gray-9000 dark:text-white text-center">
             Let's create more tools and ideas that brings us together.
           </h2>
@@ -48,7 +45,6 @@ function Introduction({businescardUrl, isLoading}) {
           
         </div> */}
         </div>
-        
       </div>
     </section>
   );

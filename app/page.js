@@ -14,6 +14,7 @@ import LoginNotifier from "@/app/components/LoginNotifier";
 import {createClient} from '@/utils/supabase/client'
 export default function Home() {
   const [businescardUrl, setBusinescardUrl] = useState("");
+  const [introduction, setIntroduction] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const supabase=createClient()
 
@@ -22,7 +23,9 @@ export default function Home() {
     if(error){
       console.log(error)
     }
+    console.log("data:",data)
     setBusinescardUrl(data.avatarUrl)
+    setIntroduction(data.introduction)
     setIsLoading(true)
   }
 
@@ -56,7 +59,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <Introduction isLoading={isLoading} businescardUrl={businescardUrl}></Introduction>
+      <Introduction isLoading={isLoading} businescardUrl={businescardUrl} introduction={introduction}></Introduction>
       <Language></Language>
       <Survey></Survey>
     </>

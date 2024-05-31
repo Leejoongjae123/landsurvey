@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { Input } from "@nextui-org/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Image,Link } from "@nextui-org/react";
+import { Image, Link } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
+
 import axios from "axios";
 function page() {
   const router = useRouter();
@@ -23,6 +25,7 @@ function page() {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [myUrl, setMyUrl] = useState("");
+  const [introduction, setIntroduction] = useState("");
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser("");
@@ -34,7 +37,7 @@ function page() {
         if (session) {
           setIsLoggedIn(true);
           setUserId(session?.user?.id);
-          setMyUrl('https://landsurvey.vercel.app?id='+session?.user?.id);
+          setMyUrl("https://landsurvey.vercel.app?id=" + session?.user?.id);
           // Fetch profile data based on userId
         } else {
           setIsLoggedIn(false);
@@ -87,6 +90,7 @@ function page() {
         regionStation: regionStation,
         regionDong: regionDong,
         regionUniv: regionUniv,
+        introduction:introduction
       })
       .eq("id", userId);
     console.log(data);
@@ -128,11 +132,8 @@ function page() {
             avatarUrl: `https://saeehnkthdubrcjpoest.supabase.co/storage/v1/object/public/${data.fullPath}`,
           })
           .eq("id", userId);
-        
-        
-        notify("upload success");
 
-          
+        notify("upload success");
       }
     }
   };
@@ -141,24 +142,24 @@ function page() {
     setLoading(true);
     try {
       const response = await axios.get(
-        'https://n3dt72xap2xe63vrms7sxbur6a0macjt.lambda-url.ap-northeast-2.on.aws/generate_qr',
+        "https://n3dt72xap2xe63vrms7sxbur6a0macjt.lambda-url.ap-northeast-2.on.aws/generate_qr",
         {
-          params: { url: 'https://landsurvey.vercel.app?id='+userId },
-          headers: { 'accept': 'application/json' },
-          responseType: 'blob', // 중요한 부분: 응답을 blob으로 설정
+          params: { url: "https://landsurvey.vercel.app?id=" + userId },
+          headers: { accept: "application/json" },
+          responseType: "blob", // 중요한 부분: 응답을 blob으로 설정
         }
       );
-      console.log(response)
+      console.log(response);
       // 파일 다운로드 처리
       const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', `qr_code_${getCurrentTimeString()}.png`);
+      link.setAttribute("download", `qr_code_${getCurrentTimeString()}.png`);
       document.body.appendChild(link);
       link.click();
       link.remove();
     } catch (error) {
-      console.error('Error downloading the QR code:', error);
+      console.error("Error downloading the QR code:", error);
     } finally {
       setLoading(false);
     }
@@ -278,6 +279,22 @@ function page() {
                     />
                   </div>
                 </div>
+                <div className="grid gap4 mb-4 sm:grid-cols-1">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      Introduction(소개)
+                    </label>
+                    <Textarea
+                      placeholder="Please introduce yourself"
+                      className="flex"
+                      value={introduction}
+                      onChange={(e) => setIntroduction(e.target.value)}
+                    />
+                  </div>
+                </div>
                 <div className="flex items-center space-x-4 justify-center">
                   <Button
                     onClick={handleSubmit}
@@ -343,7 +360,6 @@ function page() {
               </div>
 
               <div>
-                
                 <div className="flex justify-center items-center space-x-6">
                   <div className="shrink-0"></div>
                   <label className="block"></label>
@@ -358,15 +374,11 @@ function page() {
                   >
                     QR Download
                   </Button>
-                
                 </div>
-                
               </div>
-              <Link href={myUrl}>{myUrl}</Link>  
+              <Link href={myUrl}>{myUrl}</Link>
             </div>
-            
           </div>
-          
         </div>
       ) : (
         <div
