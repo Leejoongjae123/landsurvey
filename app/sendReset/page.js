@@ -8,38 +8,21 @@ import { Suspense } from "react";
 import { Button } from "@nextui-org/react";
 
 export default function page() {
+  const [isLoading,setIsLoading]=useState(false)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseClient = createClient();
 
-  const notify = (message) => toast(message);
+  const handleSend=async ()=>{
+    setIsLoading(true)
 
-  const handleSignUp = async (event) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-
-    if (!error) {
-      const userId = data.user.id; // Assuming 'data' contains the user information after sign-up
-
-      const { error: updateError } = await supabase
-        .from('profiles') // Replace 'users' with your actual table name
-        .update({ email: email })
-        .eq('id', userId);
-
-      if (updateError) {
-        notify(updateError.message);
-        return;
-      }
-
-      return router.push("/signin?signup=success");
-    } else {
-      console.log(error.message);
-      notify(error.message);
+    const {data,error}=await supabaseClient.auth.resetPasswordForEmail(email)
+    if(!error){
+      return router.push("/?login=reset")
     }
-  };
+
+  }
 
   return (
     <>
@@ -60,10 +43,7 @@ export default function page() {
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          The Only Multilingual Lease Request Form in Korea
-          </h2>
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign up
+            Reset Password
           </h2>
         </div>
 
@@ -90,44 +70,16 @@ export default function page() {
               </div>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="text-sm">
-                  <a
-                    href="/sendReset"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                />
-              </div>
-            </div>
+            
 
             <div>
               <Button
                 type="button"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={handleSignUp}
+                onClick={handleSend}
+                isLoading={isLoading}
               >
-                Sign up
+                Send mail
               </Button>
             </div>
           </form>

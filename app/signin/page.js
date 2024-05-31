@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { user } from "@nextui-org/react";
 import { Suspense } from "react";
 import SearchParamsNotifier from "./components/SearchParamsNotifier";
+import { Button } from "@nextui-org/react";
 
 
 export default function page() {
@@ -97,7 +98,7 @@ export default function page() {
                 </label>
                 <div className="text-sm">
                   <a
-                    href="#"
+                    href="/sendReset"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
@@ -119,13 +120,13 @@ export default function page() {
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 onClick={handleLogin}
               >
                 Sign in
-              </button>
+              </Button>
             </div>
           </div>
         </div>

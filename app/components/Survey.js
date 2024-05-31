@@ -81,11 +81,12 @@ function Survey() {
             <NumberChanger
               number={deposit}
               setNumber={setDeposit}
+              step={1000}
             ></NumberChanger>
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 당신이 지불할 월세는</div>
-            <NumberChanger number={rent} setNumber={setRent}></NumberChanger>
+            <NumberChanger number={rent} setNumber={setRent}step={10}></NumberChanger>
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 당신이 원하는 방의 모습</div>
@@ -150,6 +151,7 @@ function Survey() {
             <NumberChanger
               number={junseDeposit}
               setNumber={setJunseDeposit}
+              step={1000}
             ></NumberChanger>
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
@@ -188,7 +190,7 @@ function Survey() {
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 매매가능금액</div>
-            <NumberChanger number={salePrice} setNumber={setSalePrice}></NumberChanger>
+            <NumberChanger number={salePrice} setNumber={setSalePrice} step={1000}></NumberChanger>
           </div>
           <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
             <div>❓ 주거형태</div>

@@ -13,6 +13,8 @@ export default function LoginNotifier({businescardUrl, setBusinescardUrl,getBusi
       notify("Signin Success");
     }else if (searchParams === 'fail') {
       notify("Signin fail. try again.");
+    }else if(searchParams==='reset'){
+      notify("Check your Email");
     }
 
     if (userId){

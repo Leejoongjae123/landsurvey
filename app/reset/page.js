@@ -5,40 +5,39 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { Button } from "@nextui-org/react";
-
-export default function page() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function page({searchParams}) {
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+  
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseClient = createClient();
 
   const notify = (message) => toast(message);
 
-  const handleSignUp = async (event) => {
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
+  const handleChange = async () => {
+    // event.preventDefault(); // 폼 제출 기본 동작 방지
 
-    if (!error) {
-      const userId = data.user.id; // Assuming 'data' contains the user information after sign-up
-
-      const { error: updateError } = await supabase
-        .from('profiles') // Replace 'users' with your actual table name
-        .update({ email: email })
-        .eq('id', userId);
-
-      if (updateError) {
-        notify(updateError.message);
-        return;
+    if(password1===password2){
+      if (password1.length<=5){
+        setError("6자리 이상 비밀번호를 입력하세요")
+      }else{      
+        const { data, error } = await supabaseClient.auth.updateUser({
+          password: password2
+        })
+    
+        if (error) {
+          return router.push("/reset?message=Unable to reste Password. Try again!");
+        }
+        router.push('/?login=success')
       }
 
-      return router.push("/signin?signup=success");
-    } else {
-      console.log(error.message);
-      notify(error.message);
+      
+    } else{
+      setError("비밀번호가 다릅니다.")
     }
+    
+
+
   };
 
   return (
@@ -60,10 +59,7 @@ export default function page() {
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          The Only Multilingual Lease Request Form in Korea
-          </h2>
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign up
+            Change your Password
           </h2>
         </div>
 
@@ -74,18 +70,18 @@ export default function page() {
                 htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Email address
+                password
               </label>
               <div className="mt-2">
                 <input
                   id="email"
                   name="email"
-                  type="email"
+                  type="password"
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
+                  onChange={(e) => setPassword1(e.target.value)}
+                  value={password1}
                 />
               </div>
             </div>
@@ -96,16 +92,8 @@ export default function page() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Password
+                  confirm your password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="/sendReset"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -115,20 +103,20 @@ export default function page() {
                   autoComplete="current-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
+                  onChange={(e) => setPassword2(e.target.value)}
+                  value={password2}
                 />
               </div>
             </div>
 
             <div>
-              <Button
+              <button
                 type="button"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={handleSignUp}
+                onClick={handleChange}
               >
-                Sign up
-              </Button>
+                Change password
+              </button>
             </div>
           </form>
         </div>
