@@ -27,7 +27,7 @@ function Introduction({ businescardUrl, isLoading, introduction }) {
                   </Skeleton>
                 </div>
               </Card>
-              <div className="font-bold text-2xl my-5">{introduction}</div>
+              <div className="font-bold text-2xl my-5">111111111{introduction}</div>
               </div>
             </>
           )}

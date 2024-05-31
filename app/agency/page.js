@@ -73,6 +73,7 @@ function page() {
       setRegionDong(data.regionDong);
       setRegionUniv(data.regionUniv);
       setImageUrl(data.avatarUrl);
+      setIntroduction(data.introduction);
     }
   };
   useEffect(() => {
