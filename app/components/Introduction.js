@@ -6,7 +6,7 @@ function Introduction({ businescardUrl, isLoading, introduction }) {
     <section className="bg-white dark:bg-gray-900 px-16 md:my-12">
       <div className="gap-8 max-w-screen-xl flex-col justify-center items-center mx-auto xl:gap-16 md:grid md:grid-cols-1 lg:px-6">
         <div className="flex justify-center items-center">
-          {isLoading ? (<div className="flex flex-col">
+          {isLoading ? (<div className="flex flex-col justify-center items-center">
             <Image width={300} alt="NextUI hero Image" src={businescardUrl} />
             <div className="font-bold text-xl mt-5"><p className="text-center">{introduction}</p></div>
             </div>
