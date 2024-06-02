@@ -20,7 +20,9 @@ export default function page({searchParams}) {
     if(password1===password2){
       if (password1.length<=5){
         setError("6자리 이상 비밀번호를 입력하세요")
-      }else{      
+      }else{  
+        const response=supabaseClient.auth.exchangeCodeForSession(searchParams.code)
+        console.log(response.data)
         const { data, error } = await supabaseClient.auth.updateUser({
           password: password2
         })

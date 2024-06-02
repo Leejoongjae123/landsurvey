@@ -1,6 +1,6 @@
 import React from "react";
 
-function NumberChanger({number, setNumber,step}) {
+function NumberChanger({number, setNumber,step, setAnswer}) {
   
   return (
     <div class="max-w-xs ">
@@ -10,7 +10,9 @@ function NumberChanger({number, setNumber,step}) {
           id="decrement-button"
           data-input-counter-decrement="quantity-input"
           class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-          onClick={() => setNumber(Math.max(0, number - step))}>
+          onClick={() => {setNumber(Math.max(0, number - step));setAnswer(Math.max(0, number - step))}}
+          
+        >
           <svg
             class="w-3 h-3 text-gray-900 dark:text-white"
             aria-hidden="true"
@@ -45,7 +47,8 @@ function NumberChanger({number, setNumber,step}) {
           id="increment-button"
           data-input-counter-increment="quantity-input"
           class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-          onClick={() => setNumber(number + step)}
+          onClick={() => {setNumber(number + step);setAnswer(number + step)}}
+
         >
           <svg
             class="w-3 h-3 text-gray-900 dark:text-white"
