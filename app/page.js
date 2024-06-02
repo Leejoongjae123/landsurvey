@@ -16,6 +16,7 @@ export default function Home() {
   const [businescardUrl, setBusinescardUrl] = useState("");
   const [introduction, setIntroduction] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState("korean");
   const supabase = createClient();
 
   const getBusinessCardUrl = async (businescardUrl) => {
@@ -68,8 +69,11 @@ export default function Home() {
         </div>
       </section>
 
-      <Language></Language>
-      <Survey></Survey>
+      <Language
+        selectedLanguage={selectedLanguage}
+        setSelectedLanguage={setSelectedLanguage}
+      ></Language>
+      <Survey selectedLanguage={selectedLanguage}></Survey>
       <Introduction
         isLoading={isLoading}
         businescardUrl={businescardUrl}
