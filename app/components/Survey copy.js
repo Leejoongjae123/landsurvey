@@ -507,7 +507,7 @@ function Survey({ selectedLanguage, agencyEmail }) {
                 </Checkbox>
                 <Checkbox
                   onChange={handleChange8}
-                  value="방3  (화장실+욕실)2 거살  부엌"
+                  value="방3  (화장실+욕실)2 거실  부엌"
                   size="md"
                 >
                   {questions?.answer8?.answer4}
@@ -637,7 +637,7 @@ function Survey({ selectedLanguage, agencyEmail }) {
                 </Checkbox>
                 <Checkbox
                   onChange={handleChange16}
-                  value="방3  (화장실+욕실)2 거살  부엌"
+                  value="방3  (화장실+욕실)2   부엌"
                   size="md"
                 >
                   {questions?.answer16?.answer4}
@@ -765,7 +765,7 @@ function Survey({ selectedLanguage, agencyEmail }) {
                 </Checkbox>
                 <Checkbox
                   onChange={handleChange23}
-                  value="방3 (화장실+욕실)2 거살 부엌"
+                  value="방3 (화장실+욕실)2 거실 부엌"
                   size="md"
                 >
                   {questions?.answer23?.answer4}
