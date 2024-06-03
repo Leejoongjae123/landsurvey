@@ -609,13 +609,13 @@ function Survey({ selectedLanguage, agencyEmail }) {
                       <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
                         <div>Q9. {questions?.question9}</div>
                         <div className="grid grid-cols-2 md:grid-cols-3 w-full gap-4">
-                          <Checkbox onChange={handleChange9} size="md">
+                          <Checkbox value="신축" onChange={handleChange9} size="md">
                             {questions?.answer9?.answer1}
                           </Checkbox>
-                          <Checkbox onChange={handleChange9} size="md">
+                          <Checkbox value="구축" onChange={handleChange9} size="md">
                             {questions?.answer9?.answer2}
                           </Checkbox>
-                          <Checkbox onChange={handleChange9} size="md">
+                          <Checkbox value="구축리모델링" onChange={handleChange9} size="md">
                             {questions?.answer9?.answer3}
                           </Checkbox>
                         </div>
@@ -623,16 +623,16 @@ function Survey({ selectedLanguage, agencyEmail }) {
                       <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
                         <div>Q10. {questions?.question10}</div>
                         <div className="grid grid-cols-2 md:grid-cols-3 w-full gap-4">
-                          <Checkbox onChange={handleChange10} size="md">
+                          <Checkbox value="아파트" onChange={handleChange10} size="md">
                             {questions?.answer10?.answer1}
                           </Checkbox>
-                          <Checkbox onChange={handleChange10} size="md">
+                          <Checkbox value="다가구" onChange={handleChange10} size="md">
                             {questions?.answer10?.answer2}
                           </Checkbox>
-                          <Checkbox onChange={handleChange10} size="md">
+                          <Checkbox value="빌라" onChange={handleChange10} size="md">
                             {questions?.answer10?.answer3}
                           </Checkbox>
-                          <Checkbox onChange={handleChange10} size="md">
+                          <Checkbox value="오피스텔" onChange={handleChange10} size="md">
                             {questions?.answer10?.answer4}
                           </Checkbox>
                         </div>
