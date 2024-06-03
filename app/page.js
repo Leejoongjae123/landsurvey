@@ -12,6 +12,13 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import LoginNotifier from "@/app/components/LoginNotifier";
 import { createClient } from "@/utils/supabase/client";
+
+export const metadata = {
+  title: "Lease Request Form",
+  description: "We'll Find the Space For You",
+};
+
+
 export default function Home() {
   const [businescardUrl, setBusinescardUrl] = useState("");
   const [introduction, setIntroduction] = useState("");
