@@ -56,7 +56,10 @@ function Survey({ selectedLanguage, agencyEmail }) {
   const notify = (message) => toast(message);
 
   const handleSend = async () => {
-    setLoading(true);
+    if (!email) {
+      notify("Please enter your email");
+      return;
+    }
     let data = {
       email: email,
       answer1: answer1.join(" ~ "),

@@ -82,6 +82,7 @@ function page() {
     }
   }, [userId]);
   const handleSubmit = async () => {
+    console.log('userId',userId)
     const { data, error } = await supabase
       .from("profiles")
       .update({
@@ -98,6 +99,7 @@ function page() {
     if (!error) {
       notify("update success");
     } else {
+
       notify("update failed");
     }
   };
@@ -116,7 +118,7 @@ function page() {
   };
 
   const handleSubmitImage = async () => {
-    if (file && name) {
+    if (file) {
       let { data, error } = await supabase.storage
         .from("businesscard")
         .upload(`${userId}_${getCurrentTimeString()}.jpg`, file, {
@@ -164,7 +166,7 @@ function page() {
       setLoading(false);
     }
   };
-
+  console.log("name:",name)
   return (
     <div>
       {isLoggedIn ? (
@@ -299,7 +301,7 @@ function page() {
                   <Button
                     onClick={handleSubmit}
                     color="primary"
-                    type="submit"
+                    type="button"
                     className=""
                   >
                     Update
