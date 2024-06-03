@@ -83,7 +83,7 @@ function Survey({ selectedLanguage, agencyEmail }) {
       answer23: answer23.join(" / "),
       agencyEmail: agencyEmail,
     };
-
+    console.log("data:",data)
     try {
       const res = await axios.post(
         "https://kz2ccctg5iumhuinwqd3tovghe0bdpnp.lambda-url.ap-northeast-2.on.aws/sendMail",
