@@ -17,6 +17,7 @@ export default function Home() {
   const [introduction, setIntroduction] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("korean");
+  const [agencyEmail, setAgencyEmail] = useState("");
   const supabase = createClient();
 
   const getBusinessCardUrl = async (businescardUrl) => {
@@ -28,10 +29,11 @@ export default function Home() {
     if (error) {
       console.log(error);
     }
-    console.log("data:", data);
+    
     setBusinescardUrl(data.avatarUrl);
     setIntroduction(data.introduction);
     setIsLoading(true);
+    setAgencyEmail(data.email);
   };
 
   return (
@@ -73,7 +75,7 @@ export default function Home() {
         selectedLanguage={selectedLanguage}
         setSelectedLanguage={setSelectedLanguage}
       ></Language>
-      <Survey selectedLanguage={selectedLanguage}></Survey>
+      <Survey selectedLanguage={selectedLanguage} agencyEmail={agencyEmail}></Survey>
       <Introduction
         isLoading={isLoading}
         businescardUrl={businescardUrl}
