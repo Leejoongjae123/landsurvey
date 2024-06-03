@@ -150,7 +150,6 @@ function page() {
           responseType: "blob", // 중요한 부분: 응답을 blob으로 설정
         }
       );
-      console.log(response);
       // 파일 다운로드 처리
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
@@ -403,6 +402,7 @@ function page() {
                     type="button"
                     className="py-2 px-4 w-full text-sm font-medium text-center text-white "
                     onClick={goToSignIn}
+                    
                   >
                     Go to Signin
                   </Button>

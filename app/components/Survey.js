@@ -10,6 +10,8 @@ import NumberChanger from "./NumberChanger";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@nextui-org/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Survey({ selectedLanguage, agencyEmail }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,9 +48,13 @@ function Survey({ selectedLanguage, agencyEmail }) {
   const [answer21, setAnswer21] = useState([]);
   const [answer22, setAnswer22] = useState([]);
   const [answer23, setAnswer23] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState(null);
 
+  const notify = (message) => toast(message);
 
-  const handleSend = () => {
+  const handleSend = async () => {
+    setLoading(true);
     let data = {
       email: email,
       answer1: answer1,
@@ -58,26 +64,44 @@ function Survey({ selectedLanguage, agencyEmail }) {
       answer4: answer4,
       answer5: answer5,
       answer6: answer6,
-      answer7: answer7.join(' / '),
-      answer8: answer8.join(' / '),
-      answer9: answer9.join(' / '),
-      answer10: answer10.join(' / '),
+      answer7: answer7.join(" / "),
+      answer8: answer8.join(" / "),
+      answer9: answer9.join(" / "),
+      answer10: answer10.join(" / "),
       answer11: answer11,
       answer12: answer12,
       answer13: answer13,
-      answer14: answer14.join(' / '),
-      answer15: answer15.join(' / '),
-      answer16: answer16.join(' / '),
+      answer14: answer14.join(" / "),
+      answer15: answer15.join(" / "),
+      answer16: answer16.join(" / "),
       answer17: answer17,
       answer18: answer18,
-      answer19: answer19.join(' / '),
-      answer20: answer20.join(' / '),
-      answer21: answer21.join(' / '),
-      answer22: answer22.join(' / '),
-      answer23: answer23.join(' / '),
+      answer19: answer19.join(" / "),
+      answer20: answer20.join(" / "),
+      answer21: answer21.join(" / "),
+      answer22: answer22.join(" / "),
+      answer23: answer23.join(" / "),
       agencyEmail: agencyEmail,
     };
-    console.log(data)
+
+    try {
+      const res = await axios.post(
+        "https://kz2ccctg5iumhuinwqd3tovghe0bdpnp.lambda-url.ap-northeast-2.on.aws/sendMail",
+        data,
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setResponse(res.data);
+    } catch (error) {
+      setResponse({ error: error.message });
+    } finally {
+      setLoading(false);
+      notify("send mail successfully");
+    }
   };
 
   const fetchData = async () => {
@@ -254,6 +278,18 @@ function Survey({ selectedLanguage, agencyEmail }) {
 
   return (
     <section className="bg-white dark:bg-gray-900">
+      <ToastContainer
+        position="top-right" // 알람 위치 지정
+        autoClose={1000} // 자동 off 시간
+        hideProgressBar={false} // 진행시간바 숨김
+        closeOnClick // 클릭으로 알람 닫기
+        rtl={false} // 알림 좌우 반전
+        pauseOnFocusLoss // 화면을 벗어나면 알람 정지
+        draggable // 드래그 가능
+        pauseOnHover // 마우스를 올리면 알람 정지
+        theme="light"
+        // limit={1} // 알람 개수 제한
+      />
       <div className="py-8 px-4 mx-auto max-w-screen-md">
         {/* <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-900 dark:text-white">
           Share Your Real Estate Details with Us
@@ -738,7 +774,12 @@ function Survey({ selectedLanguage, agencyEmail }) {
             </div>
 
             <div className="flex justify-center">
-              <Button onClick={() => handleSend()} className="w-1/5" color="primary">
+              <Button
+                loading={loading}
+                onClick={() => handleSend()}
+                className="w-1/5"
+                color="primary"
+              >
                 Send
               </Button>
             </div>
