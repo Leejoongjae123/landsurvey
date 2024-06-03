@@ -1,7 +1,7 @@
 import QRCode from 'qrcode';
 
 export default async function handler(req, res) {
-  const url = 'https://landsurvey.vercel.app';
+  const url = 'https://www.findhome.work';
 
   try {
     console.log('Generating QR code for URL:', url);

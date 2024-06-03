@@ -37,7 +37,7 @@ function page() {
         if (session) {
           setIsLoggedIn(true);
           setUserId(session?.user?.id);
-          setMyUrl("https://landsurvey.vercel.app?id=" + session?.user?.id);
+          setMyUrl("https://www.findhome.work/?id=" + session?.user?.id);
           // Fetch profile data based on userId
         } else {
           setIsLoggedIn(false);
@@ -91,7 +91,7 @@ function page() {
         regionStation: regionStation,
         regionDong: regionDong,
         regionUniv: regionUniv,
-        introduction:introduction
+        introduction: introduction,
       })
       .eq("id", userId);
     console.log(data);
@@ -145,7 +145,7 @@ function page() {
       const response = await axios.get(
         "https://n3dt72xap2xe63vrms7sxbur6a0macjt.lambda-url.ap-northeast-2.on.aws/generate_qr",
         {
-          params: { url: "https://landsurvey.vercel.app?id=" + userId },
+          params: { url: "https://www.findhome.work/?id=" + userId },
           headers: { accept: "application/json" },
           responseType: "blob", // 중요한 부분: 응답을 blob으로 설정
         }
@@ -335,6 +335,7 @@ function page() {
                       "
                       onChange={handleFileChange}
                     />
+                    
                   </label>
                 </div>
 
@@ -402,7 +403,6 @@ function page() {
                     type="button"
                     className="py-2 px-4 w-full text-sm font-medium text-center text-white "
                     onClick={goToSignIn}
-                    
                   >
                     Go to Signin
                   </Button>
