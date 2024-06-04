@@ -63,7 +63,7 @@ export default function page() {
           The Only Multilingual Lease Request Form in Korea
           </h2>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign up
+            1. Sign up (real estate agent membership)
           </h2>
         </div>
 

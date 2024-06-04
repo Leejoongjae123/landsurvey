@@ -51,11 +51,11 @@ function LoginButtons() {
       ) : (
         <>
           <NavbarItem className="lg:flex">
-            <Link href="/signin">Sigin</Link>
+            <Link href="/signin">2.Sigin</Link>
           </NavbarItem>
           <NavbarItem>
             <Button color="primary" variant="flat">
-              <Link href="/signup">Signup</Link>
+              <Link href="/signup">1.Signup</Link>
             </Button>
           </NavbarItem>
         </>
