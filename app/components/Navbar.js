@@ -31,7 +31,6 @@ export default function App() {
         </NavbarItem>
       </NavbarContent>
       <LoginButtons></LoginButtons>
-
     </Navbar>
   );
 }
